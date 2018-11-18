@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<html>
+<head>
+    <title>Register</title>
+</head>
+
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
+
+
+<body>
+
+<h1> Sign in</h1>
+
+<form method="POST" action="/login">
+
+<p>
+    <p>Username: <input type="text" name="username"></p>
+    <p>Password: <input type="text" name="password"></p>
+    <input type="submit" value="Login"></p>
+</form>
+
+</body>
+
+
+</html>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<html>
+    <style>
+    table.dataintable {
+    border: 1px solid #888888;
+    border-collapse: collapse;
+    font-family: Arial,Helvetica,sans-serif;
+    margin-top: 10px;
+    width: 100%;
+    }
+    table.dataintable th {
+    background-color: #CCCCCC;
+    border: 1px solid #888888;
+    padding: 5px 15px 5px 5px;
+    text-align: left;
+    vertical-align: baseline;
+    }
+    table.dataintable td {
+    background-color: #EFEFEF;
+    border: 1px solid #AAAAAA;
+    padding: 5px 15px 5px 5px;
+    vertical-align: text-top;
+    }
+    </style>
+  <style>
+    body{
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
+
+<body>
+  <h1>Club Information</h1>
+  <h2>Basic Info</h2>
+  <div>
+    {% for n in b %}
+    <table class="dataintable">
+      <tr>
+        <th>Club Name</th>
+        <th>League</th>
+        <th>Ground</th>
+      </tr>
+      <tr>
+        <td>{{n[0]}}</td>
+        <td>{{n[1]}}</td>
+        <td>{{n[2]}}</td>
+      </tr>
+    </table>
+    {% endfor %}
+  </div>
+
+  <h2>Coach Info</h2>
+  <div>
+    {% for n in c %}
+    <table class="dataintable">
+      <tr>
+        <th>Coach Name</th>
+        <th>Since</th>
+      </tr>
+      <tr>
+        <td>{{n[0]}}</td>
+        <td>{{n[1]}}</td>
+      </tr>
+    </table>
+    {% endfor %}
+  </div>  
+  
+  <h3>Hall of Fame </h3>
+  <div>
+    {% for n in t %}
+    <table class="dataintable">
+      <tr>
+        <th>Title</th>
+        <th>Year</th>
+      </tr>
+      <tr>
+        <td>{{n[0]}}</td>
+        <td>{{n[1]}}</td>
+      </tr>
+    </table>
+    {% endfor %}
+  </div>
+</body>
+
+
+</html>
+{% endblock %}

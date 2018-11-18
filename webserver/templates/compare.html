@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<html>
+    <style>
+    table.dataintable {
+    border: 1px solid #888888;
+    border-collapse: collapse;
+    font-family: Arial,Helvetica,sans-serif;
+    margin-top: 10px;
+    width: 100%;
+    }
+    table.dataintable th {
+    background-color: #CCCCCC;
+    border: 1px solid #888888;
+    padding: 5px 15px 5px 5px;
+    text-align: left;
+    vertical-align: baseline;
+    }
+    table.dataintable td {
+    background-color: #EFEFEF;
+    border: 1px solid #AAAAAA;
+    padding: 5px 15px 5px 5px;
+    vertical-align: text-top;
+    }
+    </style>
+  <style>
+    body{
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
+
+
+<body>
+
+  <h1>Comparison</h1>
+  <div>
+    <table class="dataintable">
+      {% set p1 = p[0] %}
+      {% set p2 = p[1] %}
+      <tr>
+	<td></td>
+        <th scope="col">p1[0]</th>
+        <th scope="col">p2[0]</th>
+      </tr>
+      <tr>
+	<th scope="row"> club</th>
+        <td>{{p1[1]}}</td>
+        <td>{{p2[1]}}</td>
+      </tr>
+      <tr>
+	<th scope="row"> Acceleration</th>
+        <td>{{p1[2]}}</td>
+        <td>{{p2[2]}}</td>
+      </tr>
+      <tr>
+	<th scope="row"> Aggression</th>
+        <td>{{p1[3]}}</td>
+        <td>{{p2[3]}}</td>
+      </tr>
+      <tr>
+	<th scope="row"> Agility</th>
+        <td>{{p1[4]}}</td>
+        <td>{{p2[4]}}</td>
+      </tr>
+      <tr>
+	<th scope="row"> Balance</th>
+        <td>{{p1[5]}}</td>
+        <td>{{p2[5]}}</td>
+      </tr>
+      <tr>
+	<th scope="row"> Ball Control</th>
+        <td>{{p1[6]}}</td>
+        <td>{{p2[6]}}</td>
+      </tr>
+    </table>
+  </div>
+
+</body>
+
+
+</html>
+{% endblock %}
