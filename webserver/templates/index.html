@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<html>
+  <style>
+    body{
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
+
+<body>
+  <h1>Football Database</h1>
+
+<form method="POST" action="/playerName">
+<p>
+  <input type="text" name="player" style="width: 100px">
+  <input type="submit" value="Search Player By Name">
+</p>
+</form>
+
+<form method="POST" action="/leagueMatch">
+<p>
+  <input type="text" name="league" style="width: 100px">
+  <input type="submit" value="Search Match By League">
+</p>
+
+</form>
+
+<form method="POST" action="/clubInfo">
+<p>
+  <input type="text" name="club" style="width: 100px">
+  <input type="submit" value="Search Club By Name">
+</p>
+</form>
+
+<form method="POST" action="/playerFilter" name="filter">
+  <p>
+<select name="filter" value="Attributes" style="width: 100px">
+  <option value="Acceleration">Acceleration</option>
+  <option value="Aggression">Aggression</option>
+  <option value="Agility">Agility</option>
+  <option value="Balance">Balance</option>
+  <option value="BallControl">Ball Control</option>
+</select>
+  greater than
+  <input type=="text" name="val" style="width: 100px">
+  <button type="submit">Search Player By Attributes</button>
+  </p>
+</form>
+
+<form method="POST" action="/compare">
+<p>
+  <input type="text" name="name1" style="width: 100px">
+  <input type="text" name="name2" style="width: 100px">
+  <input type="submit" value="Compare Player By Name">
+</p>
+</form>
+
+</body>
+</html>
+{% endblock %}
+
+
