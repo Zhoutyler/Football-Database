@@ -28,27 +28,35 @@ def getPlayerName(playerIDs):
             print e
     return ans
 
-def getPlayerInfo(playerName):
+def getPlayerInfo(playerName, playerID=''):
     try:
-        pinfo = g.conn.execute('SELECT * FROM Player WHERE full_name=%s', playerName)
+        if playerName:
+            pinfo = g.conn.execute('SELECT * FROM Player WHERE full_name=%s', playerName)
+        else:
+            pinfo = g.conn.execute('SELECT * FROM Player WHERE playerID=%s', playerID)
         return pinfo.fetchall()[0]
     except Exception as e:
         print e
-        return []
+        return ()
 
 def getTransfer(playerID):
     try:
         tinfo = g.conn.execute('SELECT * FROM Transfers WHERE playerID=%s',playerID)
-        print playerID, tinfo
         return tinfo.fetchall()
     except Exception as e:
         print "exception:", e
         return []
 
 
+@app.before_first_request
+def before_first_request():
+    if session:
+        session.clear()
+
 @app.before_request
 def before_request():
     try:
+
         g.conn = engine.connect()
     except:
         print("uh oh, problem connecting to database")
@@ -60,8 +68,6 @@ def before_request():
 @app.teardown_request
 def teardown_request(exception):
     try:
-        if session:
-          session.clear()
         g.conn.close()
     except Exception as e:
         print "Exception when tear down:", e
@@ -123,7 +129,7 @@ def login():
             session['uid'] = uid[0]
             s = g.conn.execute('SELECT * FROM Favorites WHERE userID=%s', uid[0])
             uids.close()
-            playerIDs = [p[0] for p in s.fetchall()]
+            playerIDs = [p[1] for p in s.fetchall()]
             return render_template("profile.html", u=[(uid[0], username)], f=getPlayerName(playerIDs))
     except Exception as e:
         error = str(e)
@@ -136,7 +142,7 @@ def profile():
         return render_template('login.html')
     try:
         s = g.conn.execute('SELECT * FROM Favorites WHERE userID=%s', session['uid'])
-        playerIDs = [p[0] for p in s.fetchall()]
+        playerIDs = [p[1] for p in s.fetchall()]
         return render_template("profile.html", u=[(session['uid'], session['username'])], f=getPlayerName(playerIDs))
     except Exception as e:
         error = str(e)
@@ -155,24 +161,6 @@ def showMatch():
         print(error)
     return render_template("index.html")
 
-@app.route('/favourites')
-def addFav():
-    if "uid" not in session:
-        return render_template('login.html')
-    try:
-        players = g.conn.execute('SELECT * FROM Player')
-        s = g.conn.execute('SELECT playerID FROM Favorites WHERE userID=%s', session['uid'])
-        favoured = set([i[0] for i in s])
-        cands = []
-        for player in players:
-            if player[0] not in favoured:
-                cands.append(player)
-        return render_template('favourites.html', cands)
-
-    except Exception as e:
-        error = str(e)
-        print(error)
-        return render_template('index.html')
 
 @app.route('/clubInfo', methods=['POST'])
 def showClub():
@@ -207,6 +195,23 @@ def cmp():
     p1 = getPlayerInfo(name1)
     p2 = getPlayerInfo(name2)
     return render_template("compare.html", p=[p1, p2])
+
+@app.route('/addFavorite', methods=['POST'])
+def addFavorite():
+    if 'uid' not in session:
+        return render_template("login.html")
+    playerID = request.form['playerID']
+    pinfo = getPlayerInfo('', playerID)
+    tinfo = getTransfer(playerID)
+    addedBefore = g.conn.execute('SELECT * FROM Favorites WHERE userID=%s AND playerID=%s', session['uid'], playerID)
+    res = addedBefore.fetchall()
+    print res
+    if res:
+        return render_template("playerInfo.html", n=pinfo, t=tinfo, msg='Already in Favorites')
+    g.conn.execute('''INSERT INTO Favorites (userID, playerID) VALUES (%s, %s)''', (session['uid'], playerID))
+    return render_template("playerInfo.html", n=pinfo, t=tinfo, msg='Added to Favorites')
+
+
 
 
 

@@ -56,16 +56,18 @@
 
   <h2>favorites</h2>
   <div>
-    {% for n in f %}
+
     <table class="dataintable">
       <tr>
           <th>Player Name</th>
       </tr>
+      {% for n in f %}
       <tr>
           <td>{{n}}</td>
       </tr>
+      {% endfor %}
     </table>
-    {% endfor %}
+
   </div>
 
 

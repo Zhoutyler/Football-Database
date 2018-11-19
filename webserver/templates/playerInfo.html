@@ -35,6 +35,15 @@
 <body>
   <h1>Player Information</h1>
 
+  {% if msg is defined%}
+  <h2> {{msg}}</h2>
+  {% else %}
+  <form method="POST" action="/addFavorite">
+     <input type="hidden" name="playerID" value={{n[0]}}>
+     <input type="submit" value="Mark as favorite">
+  </form>
+  {% endif %}
+
   <h2>player</h2>
   <div>
 
