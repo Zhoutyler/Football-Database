@@ -182,7 +182,8 @@ def playerFilter():
     try:
         flt = request.form['filter']
         val = request.form['val']
-        players = g.conn.execute('SELECT * FROM Player WHERE %s > %s', flt, val).fetchall()
+        query = 'SELECT * FROM Player WHERE Player.%s > %s'% (flt, val)
+        players = g.conn.execute(query).fetchall()
         return render_template("playersFilter.html", f=flt, v=str(val), p=players, t=[])
     except Exception as e:
       print "exception:", e
