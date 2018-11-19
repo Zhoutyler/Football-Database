@@ -33,7 +33,7 @@ def getPlayerInfo(playerName, playerID=''):
         if playerName:
             pinfo = g.conn.execute('SELECT * FROM Player WHERE full_name=%s', playerName)
         else:
-            pinfo = g.conn.execute('SELECT * FROM Player WHERE playerID=%s', playerID)
+            pinfo = g.conn.execute('SELECT * FROM Player WHERE playerID=%s'%playerID)
         return pinfo.fetchall()[0]
     except Exception as e:
         print e
@@ -107,10 +107,10 @@ def register():
         for unm in usernames:
             if unm == thisname:
                 usernames.close()
-                return render_template('register.html', msg='Username exists!')
+                return render_template('register.html')
         g.conn.execute('''INSERT INTO  Account (username, pswd) VALUES (%s, %s)''', (thisname, password))
         usernames.close()
-        return render_template('register.html', msg='User:%s registered!'%usernames)
+        return render_template('login.html')
     except Exception as e:
         error = str(e)
         print(error)
