@@ -35,7 +35,7 @@
 <body>
   <h1>Match Records</h1>
   <div>
-    {% for n in r %}
+
     <table class="dataintable">
       <tr>
 	<th>Match ID </th>
@@ -45,16 +45,18 @@
 	<th>Ground</th>
 	<th>League</th>
       </tr>
+      {% for n in r %}
       <tr>
         <td>{{n[0]}}</td>
-        <td>{{n[1]}}</td>
-        <td>{{n[2]}}</td>
         <td>{{n[3]}}</td>
-	<td>{{n[4]}}</td>
-	<td>{{n[5]}}</td>
+        <td> {{n[1]}} : {{n[2]}} </td>
+        <td>{{n[4]}}</td>
+        <td>{{n[5]}}</td>
+        <td>{{n[7]}}</td>
       </tr>
+      {% endfor %}
     </table>
-    {% endfor %}
+
   </div>
 
 </body>

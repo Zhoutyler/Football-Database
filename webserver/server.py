@@ -36,6 +36,15 @@ def getPlayerInfo(playerName):
         print e
         return []
 
+def getTransfer(playerID):
+    try:
+        tinfo = g.conn.execute('SELECT * FROM Transfers WHERE playerID=%s',playerID)
+        print playerID, tinfo
+        return tinfo.fetchall()
+    except Exception as e:
+        print "exception:", e
+        return []
+
 
 @app.before_request
 def before_request():
@@ -61,6 +70,16 @@ def teardown_request(exception):
 
 @app.route('/')
 def index():
+    return render_template("index.html")
+
+
+@app.route('/playerInfo', methods=['POST'])
+def showPlayer():
+    playerName = request.form['player']
+    pinfo = getPlayerInfo(playerName)
+    if pinfo:
+        tinfo = getTransfer(str(pinfo[0][0]))
+        return render_template("playerInfo.html", p=pinfo, t=tinfo)
     return render_template("index.html")
 
 
@@ -125,22 +144,12 @@ def profile():
     return render_template('login.html')
 
 
-
-
-@app.route('/playerName', methods=['POST'])
-def showPlayer():
-    playerName = request.form['player']
-    pinfo = getPlayerInfo(playerName)
-    if pinfo:
-        return render_template("playerInfo.html", p=pinfo)
-    return render_template("index.html")
-
 @app.route('/leagueMatch', methods=['POST'])
 def showMatch():
-    leagueName = request.form['leagueName']
+    leagueName = request.form['league']
     try:
         matchInfo = g.conn.execute('SELECT * FROM Match WHERE compName=%s', leagueName)
-        return render_template("leagueMatch.html", m=matchInfo)
+        return render_template("leagueMatch.html", r=matchInfo)
     except Exception as e:
         error = str(e)
         print(error)
@@ -164,6 +173,40 @@ def addFav():
         error = str(e)
         print(error)
         return render_template('index.html')
+
+@app.route('/clubInfo', methods=['POST'])
+def showClub():
+    clubName = request.form['club']
+    try:
+        cinfo = [list(r) for r in g.conn.execute('SELECT * FROM Club WHERE clubName=%s', clubName).fetchall()]
+        cname = g.conn.execute('SELECT * FROM Coach WHERE coachID=%s', str(cinfo[0][3])).fetchall()[0][1]
+        cinfo[0][3] = cname
+        finfo = g.conn.execute('SELECT * FROM Competition WHERE recent_champion=%s', clubName).fetchall()
+        return render_template('clubInfo.html', b=cinfo, t=finfo)
+    except Exception as e:
+        error = str(e)
+        print(error)
+        return render_template('index.html')
+
+
+@app.route('/playerFilter', methods=['POST'])
+def playerFilter():
+    try:
+        flt = request.form['filter']
+        val = request.form['val']
+        players = g.conn.execute('SELECT * FROM Player WHERE %s > %s', flt, val).fetchall()
+        return render_template("playersFilter.html", f=flt, v=str(val), p=players, t=[])
+    except Exception as e:
+      print "exception:", e
+    return render_template("index.html")
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     import click
