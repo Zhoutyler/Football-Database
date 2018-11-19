@@ -31,7 +31,7 @@ def getPlayerName(playerIDs):
 def getPlayerInfo(playerName):
     try:
         pinfo = g.conn.execute('SELECT * FROM Player WHERE full_name=%s', playerName)
-        return pinfo.fetchall()
+        return pinfo.fetchall()[0]
     except Exception as e:
         print e
         return []
@@ -78,8 +78,8 @@ def showPlayer():
     playerName = request.form['player']
     pinfo = getPlayerInfo(playerName)
     if pinfo:
-        tinfo = getTransfer(str(pinfo[0][0]))
-        return render_template("playerInfo.html", p=pinfo, t=tinfo)
+        tinfo = getTransfer(str(pinfo[0]))
+        return render_template("playerInfo.html", n=pinfo, t=tinfo)
     return render_template("index.html")
 
 
@@ -94,7 +94,7 @@ def getLogin():
 
 @app.route('/register', methods=['POST'])
 def register():
-    thisname = request.form['usrname']
+    thisname = request.form['username']
     password = request.form['password']
     try:
         usernames = g.conn.execute('''SELECT A.username FROM Account A ''')
@@ -199,6 +199,15 @@ def playerFilter():
     except Exception as e:
       print "exception:", e
     return render_template("index.html")
+
+@app.route('/compare', methods=['POST'])
+def cmp():
+    name1 = request.form['name1']
+    name2 = request.form['name2']
+    p1 = getPlayerInfo(name1)
+    p2 = getPlayerInfo(name2)
+    return render_template("compare.html", p=[p1, p2])
+
 
 
 
