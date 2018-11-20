@@ -3,7 +3,7 @@ username: nc2734
 password: 4291
 
 
-The URL of your web application: 35.211.7.117
+The URL of your web application: 35.211.7.117:8111
 
 Features Implemented:
 1. show player statistics by search player name
