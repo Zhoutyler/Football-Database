@@ -169,7 +169,8 @@ def showClub():
         cinfo = [list(r) for r in g.conn.execute('SELECT * FROM Club WHERE clubName=%s', clubName).fetchall()]
         cname = g.conn.execute('SELECT * FROM Coach WHERE coachID=%s', str(cinfo[0][3])).fetchall()[0][1]
         cinfo[0][3] = cname
-        finfo = g.conn.execute('SELECT * FROM Competition WHERE recent_champion=%s', clubName).fetchall()
+        # finfo = g.conn.execute('SELECT * FROM Competition WHERE recent_champion=%s', clubName).fetchall()
+        finfo = g.conn.execute('SELECT Title.titleName, Title.year FROM Title WHERE Title.clubName=%s', clubName).fetchall()
         return render_template('clubInfo.html', b=cinfo, t=finfo)
     except Exception as e:
         error = str(e)

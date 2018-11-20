@@ -67,16 +67,19 @@
 
   <h2>Hall of Fame </h2>
   <div>
-    {% for n in t %}
     <table class="dataintable">
       <tr>
         <th>Title</th>
+        <th>Time</th>
       </tr>
+    {% for n in t %}
       <tr>
         <td>{{n[0]}}</td>
+        <td>{{n[1]}}</td>
       </tr>
-    </table>
     {% endfor %}
+    </table>
+
   </div>
 </body>
 
