@@ -1,0 +1,20 @@
+The PostgreSQL account:
+username: nc2734
+password: 4291
+
+
+The URL of your web application: 35.211.7.117
+
+Features Implemented:
+1. show player statistics by search player name
+2. show information of a club including past match records of mainstream league, club honors and history by search club name
+3. Querying players by filters, for example "search players with a value of aggregasion larger than 80"
+4. comparing players according to different performance attributes like passing, shootings, defense, physical given player names
+5. Users can sign up, login, and "favourite" a player
+
+Features Not Implemented:
+None
+
+
+Briefly describe two of the web pages that require (what you consider) the most interesting database operations in terms of what the pages are used for, how the page is related to the database operations (e.g., inputs on the page are used in such and such way to produce database operations that do such and such), and why you think they are interesting.
+TO DO
