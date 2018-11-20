@@ -15,6 +15,9 @@ Features Implemented:
 Features Not Implemented:
 None
 
-
+Interesting database operations:
 Briefly describe two of the web pages that require (what you consider) the most interesting database operations in terms of what the pages are used for, how the page is related to the database operations (e.g., inputs on the page are used in such and such way to produce database operations that do such and such), and why you think they are interesting.
-TO DO
+
+1. In the sign in/sign up pages, users' can add personal info to our database, say, add a row consists of username and password to our "user" relation. Then we can check users' identities according to the match with records in our database to simulate login. Also, each user can maintain a group of favorite players, which is actually records consisting of <userid, playerid> in our "favorite" instance. We can dynamically change web page response according to whether the user has marked the player as favorite or not.
+
+2. In the playersFilter page, users can filter players by specific attributes they are interested in. Such an operation make selection on rows in our "players" instance.
