@@ -81,11 +81,14 @@ def index():
 
 @app.route('/playerInfo', methods=['POST'])
 def showPlayer():
-    playerName = request.form['player']
-    pinfo = getPlayerInfo(playerName)
-    if pinfo:
-        tinfo = getTransfer(str(pinfo[0]))
-        return render_template("playerInfo.html", n=pinfo, t=tinfo)
+    try:
+        playerName = request.form['player']
+        pinfo = getPlayerInfo(playerName)
+        if pinfo:
+            tinfo = getTransfer(str(pinfo[0]))
+            return render_template("playerInfo.html", n=pinfo, t=tinfo)
+    except Exception as e:
+        print "exception:", e
     return render_template("index.html")
 
 
@@ -175,7 +178,7 @@ def showClub():
     except Exception as e:
         error = str(e)
         print(error)
-        return render_template('index.html')
+    return render_template('index.html')
 
 
 @app.route('/playerFilter', methods=['POST'])
@@ -187,31 +190,39 @@ def playerFilter():
         players = g.conn.execute(query).fetchall()
         return render_template("playersFilter.html", f=flt, v=str(val), p=players, t=[])
     except Exception as e:
-      print "exception:", e
+        print "exception:", e
     return render_template("index.html")
 
 @app.route('/compare', methods=['POST'])
 def cmp():
     name1 = request.form['name1']
     name2 = request.form['name2']
-    p1 = getPlayerInfo(name1)
-    p2 = getPlayerInfo(name2)
-    return render_template("compare.html", p=[p1, p2])
+    try:
+        p1 = getPlayerInfo(name1)
+        p2 = getPlayerInfo(name2)
+        return render_template("compare.html", p=[p1, p2])
+    except Exception as e:
+        print "exception:", e
+    return render_template("index.html")
+
 
 @app.route('/addFavorite', methods=['POST'])
 def addFavorite():
     if 'uid' not in session:
         return render_template("login.html")
-    playerID = request.form['playerID']
-    pinfo = getPlayerInfo('', playerID)
-    tinfo = getTransfer(playerID)
-    addedBefore = g.conn.execute('SELECT * FROM Favorites WHERE userID=%s AND playerID=%s', session['uid'], playerID)
-    res = addedBefore.fetchall()
-    print res
-    if res:
-        return render_template("playerInfo.html", n=pinfo, t=tinfo, msg='Already in Favorites')
-    g.conn.execute('''INSERT INTO Favorites (userID, playerID) VALUES (%s, %s)''', (session['uid'], playerID))
-    return render_template("playerInfo.html", n=pinfo, t=tinfo, msg='Added to Favorites')
+    try:
+        playerID = request.form['playerID']
+        pinfo = getPlayerInfo('', playerID)
+        tinfo = getTransfer(playerID)
+        addedBefore = g.conn.execute('SELECT * FROM Favorites WHERE userID=%s AND playerID=%s', session['uid'], playerID)
+        res = addedBefore.fetchall()
+        if res:
+            return render_template("playerInfo.html", n=pinfo, t=tinfo, msg='Already in Favorites')
+        g.conn.execute('''INSERT INTO Favorites (userID, playerID) VALUES (%s, %s)''', (session['uid'], playerID))
+        return render_template("playerInfo.html", n=pinfo, t=tinfo, msg='Added to Favorites')
+    except Exception as e:
+        print "exception:", e
+    return render_template("index.html")
 
 
 
